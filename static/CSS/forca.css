@@ -1,0 +1,80 @@
+body {
+    font-family: 'Press Start 2P', sans-serif;
+    background-image: url('../images/71rzlQ2XMOL.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: #000000;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+img.mine {
+    width: 55%; 
+    margin: 2px auto;
+    display: block;
+    border-radius: 2px;
+}
+
+h1 {
+    font-size: 48px;
+    color: #28f200;
+    text-shadow: 2px 2px #000;
+    margin-bottom: 20px;
+}
+
+#palavra {
+    font-size: 40px;
+    letter-spacing: 10px;
+    margin-bottom: 10px;
+    color: #050505;
+    text-shadow: 2px 2px #000;
+}
+
+#dica {
+    margin-bottom: 15px;
+    color: #000000;
+}
+
+#status, #attempts {
+    font-size: 20px;
+    margin-top: 10px;
+    color: #000000;
+}
+
+button {
+    font-size: 18px;
+    padding: 10px 20px;
+    background-color: #0091f2;
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 3px 3px #000;
+}
+
+button:hover {
+    background-color: #ffc700;
+}
+
+input {
+    font-size: 18px;
+    padding: 10px;
+    border: 2px solid #f2a900;
+    margin-right: 10px;
+    box-shadow: 2px 2px #000;
+    color: #000;
+}
+
+#forca {
+    margin-top: 30px;
+}
+
+canvas {
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 2px solid #d4d4d4;
+    box-shadow: 5px 5px #000;
+}
+

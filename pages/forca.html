@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/CSS/forca.css">
+    <title>Jogo da Forca</title>
+</head>
+<body>
+
+    <h1>Jogo da Forca</h1>
+
+    <div id="palavra">_ _ _ _ _</div>
+    <div id="dica"></div>
+    <div id="status"></div>
+    <div id="attempts"></div>
+
+    <input type="text" id="guess" maxlength="1" autofocus>
+    <button onclick="adivinharLetra()">Adivinhar Letra</button>
+    <button onclick="recomecarJogo()">Recomeçar Jogo</button>
+
+    <div id="forca">
+        <canvas id="canvasForca" width="300" height="300"></canvas>
+    </div>
+
+    <script>
+        let palavraAtual; 
+        let dicaAtual; 
+        let letrasAdivinhadas = []; 
+        const tentativasMaximas = 6; 
+        let tentativasRestantes; 
+        const palavras = ["bloco", "creeper", "enderman", "nether", "redstone", "pistão", "poção", "encantamento", "minério", "aldeão", "espada", "picareta", "forno", "mesa de trabalho", "portal", "dragão", "zumbi", "esqueleto", "exploração", "construção", "bioma", "fortaleza", "slime", "lava", "diamante", "obsidiana", "caverna", "fazenda", "mapa", "bússola"];
+        const dicas = ["Unidade básica de construção no Minecraft.", "Inimigo que explode ao se aproximar do jogador.", "Criatura que se teletransporta e é hostil quando olhada diretamente.", "Dimensão infernal acessível através de um portal.", "Material usado para criar circuitos e mecanismos.", "Bloco que pode empurrar outros blocos quando ativado.", "Item que concede efeitos especiais ao jogador.", "Melhorias aplicadas a armas e ferramentas.", "Recursos naturais extraídos de blocos específicos.", "NPC que vive em vilas e pode trocar itens com o jogador.", "Arma usada para combate corpo a corpo.", "Ferramenta usada para minerar blocos.", "Bloco usado para fundir minérios e cozinhar alimentos.", "Bloco usado para criar itens e ferramentas.", "Estrutura que permite viajar entre dimensões.", "Chefe final encontrado na dimensão End.", "Inimigo comum que aparece à noite.", "Inimigo que usa arco e flecha.", "Ato de descobrir novas áreas e recursos.", "Processo de criar estruturas e edificações.", "Região com características ambientais específicas.", "Estrutura encontrada no Nether, cheia de perigos.", "Criatura que se divide em partes menores quando derrotada.", "Líquido quente que causa dano ao jogador.", "Minério raro usado para criar ferramentas e armaduras poderosas.", "Bloco resistente usado para construir portais para o Nether.", "Espaço subterrâneo cheio de recursos e perigos.", "Área dedicada ao cultivo de plantas e criação de animais.", "Item usado para visualizar a área ao redor do jogador.", "Ferramenta que aponta para o ponto de spawn do jogador."]; 
+        
+        function iniciarJogo() {
+            const indiceAleatorio = Math.floor(Math.random() * palavras.length);
+            palavraAtual = palavras[indiceAleatorio];
+            dicaAtual = dicas[indiceAleatorio];
+            letrasAdivinhadas = [];
+            tentativasRestantes = tentativasMaximas;
+            atualizarDisplayDoJogo();
+        }
+
+        function atualizarDisplayDoJogo() {
+            let palavraExibida = "";
+            for (let i = 0; i < palavraAtual.length; i++) {
+                const letra = palavraAtual[i];
+                if (letrasAdivinhadas.includes(letra) || letra === " ") {
+                    palavraExibida += letra;
+                } else {
+                    palavraExibida += "_ ";
+                }
+            }
+
+            document.getElementById("palavra").textContent = palavraExibida;
+            document.getElementById("dica").textContent = `Dica: ${dicaAtual}`;
+            document.getElementById("status").textContent = `Tentativas Restantes: ${tentativasRestantes}`;
+            document.getElementById("attempts").textContent = `Letras já tentadas: ${letrasAdivinhadas.join(", ")}`;
+
+            if (tentativasRestantes <= 0) {
+                document.getElementById("status").textContent = `Você perdeu! A palavra era: ${palavraAtual}`;
+            } else if (palavraExibida.indexOf('_') === -1) {
+                document.getElementById("status").textContent = "Você venceu!";
+            }
+        }
+
+        function adivinharLetra() {
+            const entradaAdivinhacao = document.getElementById("guess");
+            const letraAdivinhada = entradaAdivinhacao.value.toLowerCase();
+
+            if (letraAdivinhada.length === 1 && /^[a-záéíóúãõç]$/i.test(letraAdivinhada)) {
+                if (!letrasAdivinhadas.includes(letraAdivinhada)) {
+                    letrasAdivinhadas.push(letraAdivinhada);
+
+                    if (!palavraAtual.includes(letraAdivinhada)) {
+                        tentativasRestantes--;
+                    }
+
+                    atualizarDisplayDoJogo();
+                    desenharBoneco();
+                }
+            }
+
+            entradaAdivinhacao.value = "";
+        }
+
+        function desenharBoneco() {
+            const canvas = document.getElementById("canvasForca");
+            const contexto = canvas.getContext("2d");
+
+        
+            contexto.clearRect(0, 0, canvas.width, canvas.height);
+
+         
+            contexto.lineWidth = 2;
+            contexto.beginPath();
+            contexto.moveTo(10, 180);
+            contexto.lineTo(190, 180);
+            contexto.moveTo(50, 180);
+            contexto.lineTo(50, 20);
+            contexto.lineTo(120, 20);
+            contexto.lineTo(120, 40);
+            contexto.stroke();
+
+
+            const partesBoneco = [
+                function desenharCabeca() {
+                    contexto.beginPath();
+                    contexto.arc(120, 55, 15, 0, Math.PI * 2);
+                    contexto.stroke();
+                },
+                function desenharTronco() {
+                    contexto.beginPath();
+                    contexto.moveTo(120, 70);
+                    contexto.lineTo(120, 120);
+                    contexto.stroke();
+                },
+                function desenharBracoEsquerdo() {
+                    contexto.beginPath();
+                    contexto.moveTo(120, 80);
+                    contexto.lineTo(100, 100);
+                    contexto.stroke();
+                },
+                function desenharBracoDireito() {
+                    contexto.beginPath();
+                    contexto.moveTo(120, 80);
+                    contexto.lineTo(140, 100);
+                    contexto.stroke();
+                },
+                function desenharPernaEsquerda() {
+                    contexto.beginPath();
+                    contexto.moveTo(120, 120);
+                    contexto.lineTo(100, 150);
+                    contexto.stroke();
+                },
+                function desenharPernaDireita() {
+                    contexto.beginPath();
+                    contexto.moveTo(120, 120);
+                    contexto.lineTo(140, 150);
+                    contexto.stroke();
+                }
+            ];
+
+            const partesParaDesenhar = tentativasMaximas - tentativasRestantes;
+            for (let i = 0; i < partesParaDesenhar; i++) {
+                partesBoneco[i]();
+            }
+        }
+
+        function limparCanvas() {
+            const canvas = document.getElementById("canvasForca");
+            const contexto = canvas.getContext("2d");
+            contexto.clearRect(0, 0, canvas.width, canvas.height); 
+        }
+
+        function recomecarJogo() {
+            limparCanvas(); 
+            iniciarJogo();
+        }
+
+        document.addEventListener("DOMContentLoaded", iniciarJogo);
+    </script>
+    <img src="../static/images/Mineelivro.png" alt="Minecraft" class="img-fluid mine">
+
+</body>
+</html>
