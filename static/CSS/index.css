@@ -3,7 +3,7 @@ body {
     text-align: center;
     margin: 0;
     padding: 0;
-    background: linear-gradient(rgba(94, 94, 99, 1) 0%, rgba(182, 182, 190, 1) 50%, rgba(68, 74, 75, 1) 100%);
+    background-image: url(../images/Dirt_background_JE1.png);
 }
 
 img.mine {
